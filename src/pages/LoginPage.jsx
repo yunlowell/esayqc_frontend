@@ -34,7 +34,7 @@ function LoginPage() {
     };
 
     const handleGoogleLogin = () => {
-        const redirectURL = encodeURIComponent('https://13.125.173.58.nip.io/auth/google/callback');
+        const redirectURL = encodeURIComponent("https://13.125.173.58.nip.io/#/auth/google/callback");
         window.location.href = `https://13.125.173.58.nip.io/auth/google/login?redirect=${redirectURL}`;
     };
 
