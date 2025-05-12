@@ -34,7 +34,7 @@ function LoginPage() {
     };
 
     const handleGoogleLogin = () => {
-        const redirectURL = encodeURIComponent('http://13.125.173.58/#/auth/google/callback');
+        const redirectURL = encodeURIComponent('https://easyqcapp.netlify.app/auth/google/callback');
         window.location.href = `http://13.125.173.58:8000/auth/google/login?redirect=${redirectURL}`;
     };
 
