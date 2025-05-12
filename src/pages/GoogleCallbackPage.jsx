@@ -6,6 +6,8 @@ function GoogleCallbackPage() {
     const location = useLocation();
 
     useEffect(() => {
+        console.log("✅ full hash:", window.location.hash);
+
         const fullHash = window.location.hash;
         const tokenMatch = fullHash.match(/firebase_token=([^&]+)/);
         const token = tokenMatch ? tokenMatch[1] : null;
@@ -15,8 +17,11 @@ function GoogleCallbackPage() {
         if (token) {
             localStorage.setItem("token", token);
             navigate("/home");
+        } else {
+            console.warn("❌ firebase_token 파싱 실패");
         }
     }, [location, navigate]);
+
 
     return (
         <div style={{ textAlign: 'center', marginTop: '100px' }}>
