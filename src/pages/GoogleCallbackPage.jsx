@@ -6,20 +6,30 @@ function GoogleCallbackPage() {
     const location = useLocation();
 
     useEffect(() => {
-        // 1. 쿼리 파라미터에서 firebase_token 추출
-        const queryParams = new URLSearchParams(location.search);
-        const tokenFromQuery = queryParams.get("firebase_token");
+        const params = new URLSearchParams(location.search);
+        const code = params.get("code");
+        const state = params.get("state");  // 원래 redirect 주소
 
-        // 2. 또는 해시에서 추출
-        const hashParams = new URLSearchParams(window.location.hash.slice(1));
-        const tokenFromHash = hashParams.get("firebase_token");
-
-        const token = tokenFromQuery || tokenFromHash;
-        console.log("✅ Final parsed firebase_token:", token);
-
-        if (token) {
-            localStorage.setItem("token", token);
-            navigate('/home');
+        if (code && state) {
+            fetch("http://13.125.173.58:8000/auth/google/callback", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: new URLSearchParams({
+                    code,
+                    redirect: state
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                console.log("✅ firebase_token 응답:", data);
+                if (data.firebase_token) {
+                    localStorage.setItem("token", data.firebase_token);
+                    navigate("/home");
+                }
+            })
+            .catch(err => {
+                console.error("구글 로그인 실패:", err);
+            });
         }
     }, [location, navigate]);
 
