@@ -6,8 +6,8 @@ function GoogleCallbackPage() {
     const location = useLocation();
 
     useEffect(() => {
-        const params = new URLSearchParams(location.hash.slice(1));
-        const token = params.get("firebase_token");
+        const hashParams = new URLSearchParams(window.location.hash.slice(1));
+        const token = hashParams.get("firebase_token");
 
         console.log("✅ 최종 받은 firebase_token:", token);
 
