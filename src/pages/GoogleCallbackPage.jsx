@@ -1,24 +1,27 @@
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 function GoogleCallbackPage() {
     const navigate = useNavigate();
+    const location = useLocation();
 
     useEffect(() => {
-        const hash = window.location.hash;
-        const tokenMatch = hash.match(/firebase_token=([^&]+)/);
-        const tokenFromQuery = tokenMatch ? tokenMatch[1] : null;
+        // 1. 쿼리 파라미터에서 firebase_token 추출
+        const queryParams = new URLSearchParams(location.search);
+        const tokenFromQuery = queryParams.get("firebase_token");
 
-        console.log("✅ parsed token:", tokenFromQuery);
+        // 2. 또는 해시에서 추출
+        const hashParams = new URLSearchParams(window.location.hash.slice(1));
+        const tokenFromHash = hashParams.get("firebase_token");
 
-        if (tokenFromQuery) {
-            if (!localStorage.getItem('token')) {
-                localStorage.setItem('token', tokenFromQuery);
-            }
+        const token = tokenFromQuery || tokenFromHash;
+        console.log("✅ Final parsed firebase_token:", token);
+
+        if (token) {
+            localStorage.setItem("token", token);
             navigate('/home');
         }
-    }, [navigate]);
-
+    }, [location, navigate]);
 
     return (
         <div style={{ textAlign: 'center', marginTop: '100px' }}>
