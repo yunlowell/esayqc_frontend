@@ -1,9 +1,8 @@
 import { useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function GoogleCallbackPage() {
     const navigate = useNavigate();
-    const location = useLocation();
 
     useEffect(() => {
         console.log("🔍 hash:", window.location.hash);
@@ -14,12 +13,11 @@ function GoogleCallbackPage() {
         if (token) {
             console.log("✅ firebase_token:", token);
             localStorage.setItem("token", token);
-            navigate("/home");
+            window.location.href = "/#/home"; // 또는 navigate("/home");
         } else {
             console.warn("❌ firebase_token 없음");
         }
-    }, []);
-
+    }, [navigate]); // ✅ navigate 포함
 
     return (
         <div style={{ textAlign: 'center', marginTop: '100px' }}>
