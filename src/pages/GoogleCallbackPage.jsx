@@ -6,21 +6,19 @@ function GoogleCallbackPage() {
     const location = useLocation();
 
     useEffect(() => {
-        console.log("✅ full hash:", window.location.hash);
-
+        console.log("🔍 hash:", window.location.hash);
         const fullHash = window.location.hash;
         const tokenMatch = fullHash.match(/firebase_token=([^&]+)/);
         const token = tokenMatch ? tokenMatch[1] : null;
 
-        console.log("✅ 최종 받은 firebase_token:", token);
-
         if (token) {
+            console.log("✅ firebase_token:", token);
             localStorage.setItem("token", token);
             navigate("/home");
         } else {
-            console.warn("❌ firebase_token 파싱 실패");
+            console.warn("❌ firebase_token 없음");
         }
-    }, [location, navigate]);
+    }, []);
 
 
     return (
